@@ -29,6 +29,27 @@ public class ArrayList<E> {
 		elements[size++] = ele;
 	}
 
+	public void addFirst(E ele) {
+		Object[] newArr = new Object[size + 1];
+		newArr[0] = ele;
+		int j = 1;
+		for (int i = 0; i < size; i++) {
+			newArr[j++] = elements[i];
+		}
+		elements = newArr;
+		size++;
+	}
+
+	public void addLast(E ele) {
+		Object[] newArr = new Object[size + 1];
+		newArr[newArr.length - 1] = ele;
+		for (int i = 0; i < size; i++) {
+			newArr[i] = elements[i];
+		}
+		elements = newArr;
+		size++;
+	}
+
 	public E get(int index) {
 		checkIndex(index);
 		return (E) elements[index];
@@ -44,6 +65,21 @@ public class ArrayList<E> {
 		size--;
 		return (E) ele;
 	}
+	
+//	public E removeFirst() {
+//		
+//	}
+	  public E removeLast() {
+		  Object[] newArr = new Object[size - 1];
+		  Object temp = elements[size-1];
+		  elements[size-1]= null;
+		  for (int i = 0; i < size-1; i++) {
+				newArr[i] = elements[i];
+			}
+			elements = newArr;
+			size--;
+		 return (E) temp;
+	  }
 
 	public void ensureCapacity(int minCap) {
 		if (minCap > elements.length) {
@@ -110,49 +146,49 @@ public class ArrayList<E> {
 
 	public boolean contains(Object obj) {
 		for (int i = 0; i < size; i++) {
-	        if (obj == null ? elements[i] == null : obj.equals(elements[i])) {
-	            return true;
-	        }
-	    }
+			if (obj == null ? elements[i] == null : obj.equals(elements[i])) {
+				return true;
+			}
+		}
 		return false;
 	}
 
 	public int indexOf(Object obj) {
 		for (int i = 0; i < size; i++) {
-	        if (obj == null ? elements[i] == null : obj.equals(elements[i])) {
-	            return i;
-	        }
-	    }
+			if (obj == null ? elements[i] == null : obj.equals(elements[i])) {
+				return i;
+			}
+		}
 		return -1;
 	}
 
 	public int lastIndexOf(Object obj) {
 		for (int i = size - 1; i >= 0; i--) {
-	        if (obj == null ? elements[i] == null : obj.equals(elements[i])) {
-	            return i;
-	        }
-	    }
-	    return -1;
+			if (obj == null ? elements[i] == null : obj.equals(elements[i])) {
+				return i;
+			}
+		}
+		return -1;
 	}
 
 	public E getFirst() {
 		if (isEmpty()) {
-			throw new MyIllegalArgumentException("Index: " +  0 + ", Size: " + size);
+			throw new MyIllegalArgumentException("Index: " + 0 + ", Size: " + size);
 		}
 		return (E) elements[0];
 	}
 
 	public E getLast() {
 		if (isEmpty()) {
-			throw new MyIllegalArgumentException("Index: " +  (size-1) + ", Size: " + size);
+			throw new MyIllegalArgumentException("Index: " + (size - 1) + ", Size: " + size);
 		}
-		return (E) elements[size-1];
+		return (E) elements[size - 1];
 	}
-	
-	 public E set(int idx, E ele) {
-		 checkIndex(idx);
-		 Object temp = elements[idx];
-		 elements[idx] = ele;
-		 return (E)temp;
-	 }
+
+	public E set(int idx, E ele) {
+		checkIndex(idx);
+		Object temp = elements[idx];
+		elements[idx] = ele;
+		return (E) temp;
+	}
 }

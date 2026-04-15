@@ -6,112 +6,111 @@ public class ArrayListDriver {
  
 	public static void main(String[] args) {
 		 
-		 ArrayList<Integer> list = new ArrayList<>();
+		  ArrayList<Integer> list = new ArrayList<>();
 
-	        // 🔹 Test add()
-	        System.out.println("---- Testing add() ----");
-	        for (int i = 1; i <= 15; i++) {
-	            list.add(i);
-	        }
-	        list.add(2);
-	        System.out.println("List: " + list);
+	        System.out.println("=== ADD ELEMENTS ===");
+	        list.add(10);
+	        list.add(20);
+	        list.add(30);
+	        System.out.println(list);
+
+	        System.out.println("\n=== ADD FIRST ===");
+	        list.addFirst(5);
+	        System.out.println(list);
+
+	        System.out.println("\n=== ADD LAST ===");
+	        list.addLast(40);
+	        System.out.println(list);
+
+	        System.out.println("\n=== GET ELEMENT ===");
+	        System.out.println("Element at index 2: " + list.get(2));
+
+	        System.out.println("\n=== SET ELEMENT ===");
+	        list.set(2, 99);
+	        System.out.println(list);
+
+	        System.out.println("\n=== REMOVE BY INDEX ===");
+	        list.remove(2);
+	        System.out.println(list);
+
+	        System.out.println("\n=== REMOVE LAST ===");
+	        list.removeLast();
+	        System.out.println(list);
+
+	        System.out.println("\n=== SIZE & CAPACITY ===");
 	        System.out.println("Size: " + list.size());
 	        System.out.println("Capacity: " + list.capacity());
 
-	        // 🔹 Test get()
-	        System.out.println("\n---- Testing get() ----");
-	        System.out.println("Element at index 5: " + list.get(5));
+	        System.out.println("\n=== CONTAINS ===");
+	        System.out.println("Contains 20? " + list.contains(20));
+	        System.out.println("Contains 100? " + list.contains(100));
 
-	        // 🔹 Test remove()
-	        System.out.println("\n---- Testing remove() ----");
-	        System.out.println("Removed element: " + list.remove(5));
-	        System.out.println("List after removal: " + list);
-	        System.out.println("Size: " + list.size());
-
-	        // 🔹 Test ensureCapacity()
-	        System.out.println("\n---- Testing ensureCapacity() ----");
-	        list.ensureCapacity(50);
-	        System.out.println("Capacity after ensureCapacity(50): " + list.capacity());
-
-	        // 🔹 Test trimToSize()
-	        System.out.println("\n---- Testing trimToSize() ----");
-	        list.trimToSize();
-	        System.out.println("Capacity after trimToSize(): " + list.capacity());
-
-	        // 🔹 Test index out of bounds
-	        System.out.println("\n---- Testing Index Check ----");
-	        try {
-	            list.get(100);
-	        } catch (Exception e) {
-	            System.out.println("Exception caught: " + e.getMessage());
-	        }
-
-	        // 🔹 Final State
-	        System.out.println("\n---- Final List ----");
+	        System.out.println("\n=== INDEX OF ===");
+	        list.add(20);
 	        System.out.println(list);
-	        
-//	        System.out.println("\n---- Clear List ----");
-//	        list.clear();
-//	        System.out.println(list);
-//	        System.out.println(list.capacity());
-	        
-	        System.out.println(list.contains(16));
-	        
-	        System.out.println("----------- indexOf() : ------------");
-	        System.out.println(list.indexOf(16));
-	        
-	        System.out.println("----------- lastIndexOf() : ------------");
-	        System.out.println(list.lastIndexOf(2));    
-		
-	        System.out.println("\n---- After Adding Elements ----");
-	        System.out.println("List: " + list);
-	        System.out.println("Size: " + list.size());
+	        System.out.println("First index of 20: " + list.indexOf(20));
+	        System.out.println("Last index of 20: " + list.lastIndexOf(20));
 
-	        // 🔹 Test isEmpty()
-	        System.out.println("\n---- Testing isEmpty() ----");
-	        System.out.println("Is Empty: " + list.isEmpty());
+	        System.out.println("\n=== GET FIRST & LAST ===");
+	        System.out.println("First: " + list.getFirst());
+	        System.out.println("Last: " + list.getLast());
 
-	        // 🔹 Test contains()
-	        System.out.println("\n---- Testing contains() ----");
-	        System.out.println("Contains 20: " + list.contains(20));
-	        System.out.println("Contains 99: " + list.contains(99));
+	        System.out.println("\n=== TRIM TO SIZE ===");
+	        list.trimToSize();
+	        System.out.println("Capacity after trim: " + list.capacity());
 
-	        // 🔹 Test indexOf()
-	        System.out.println("\n---- Testing indexOf() ----");
-	        System.out.println("First index of 1: " + list.indexOf(1));
-	        System.out.println("Index of 2: " + list.indexOf(2));
+	        System.out.println("\n=== CLEAR ===");
+	        list.clear();
+	        System.out.println("After clear: " + list);
+	        System.out.println("Is empty? " + list.isEmpty());
 
-	        // 🔹 Test lastIndexOf()
-	        System.out.println("\n---- Testing lastIndexOf() ----");
-	        System.out.println("Last index of 20: " + list.lastIndexOf(2));
-	        System.out.println("Last index of 99: " + list.lastIndexOf(9));
-
-	        // 🔹 Test getFirst() and getLast()
-	        System.out.println("\n---- Testing getFirst() & getLast() ----");
-	        System.out.println("First element: " + list.getFirst());
-	        System.out.println("Last element: " + list.getLast());
-
-	        // 🔹 Test set()
-	        System.out.println("\n---- Testing set() ----");
-	        System.out.println("Replacing index 2 with 99");
-	        Integer oldValue = list.set(2, 99);
-	        System.out.println("Old value: " + oldValue);
-	        System.out.println("Updated List: " + list);
-
-	        // 🔹 Edge Case: Empty List for getFirst/getLast
-	        System.out.println("\n---- Testing Exception Case ----");
-	        ArrayList<Integer> emptyList = new ArrayList<>();
+	        System.out.println("\n=== EXCEPTION TESTS ===");
 
 	        try {
-	            emptyList.getFirst();
+	            list.get(0);
 	        } catch (Exception e) {
-	            System.out.println("getFirst() Exception: " + e.getMessage());
+	            System.out.println("Exception caught (get): " + e.getMessage());
 	        }
 
 	        try {
-	            emptyList.getLast();
+	            list.remove(0);
 	        } catch (Exception e) {
-	            System.out.println("getLast() Exception: " + e.getMessage());
+	            System.out.println("Exception caught (remove): " + e.getMessage());
 	        }
+
+	        try {
+	            list.getFirst();
+	        } catch (Exception e) {
+	            System.out.println("Exception caught (getFirst): " + e.getMessage());
+	        }
+
+	        try {
+	            list.getLast();
+	        } catch (Exception e) {
+	            System.out.println("Exception caught (getLast): " + e.getMessage());
+	        }
+
+	        System.out.println("\n=== LARGE DATA TEST (RESIZING) ===");
+	        ArrayList<Integer> bigList = new ArrayList<>(2);
+	        for (int i = 1; i <= 20; i++) {
+	            bigList.add(i);
+	        }
+	        System.out.println(bigList);
+	        System.out.println("Size: " + bigList.size());
+	        System.out.println("Capacity: " + bigList.capacity());
+
+	        System.out.println("\n=== NULL HANDLING TEST ===");
+	        ArrayList<String> strList = new ArrayList<>();
+	        strList.add("A");
+	        strList.add(null);
+	        strList.add("B");
+	        System.out.println(strList);
+	        System.out.println("Contains null? " + strList.contains(null));
+	        System.out.println("Index of null: " + strList.indexOf(null));
+
+	        System.out.println("\n=== END OF TEST ===");
+	        
+	        
+	        
 	}
 }
