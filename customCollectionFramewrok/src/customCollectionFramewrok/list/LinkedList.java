@@ -1,6 +1,7 @@
 package customCollectionFramewrok.list;
 
 import customCollectionFramewrok.exception.MyIndexOutOfBoundsException;
+import customCollectionFramewrok.exception.MyNoSuchElementException;
 
 public class LinkedList<E> {
 
@@ -80,6 +81,21 @@ public class LinkedList<E> {
 	public void addLast(E ele) {
 		add(size, ele);
 	}
+	
+	public boolean offer(E e) {
+		addLast(e);
+		return true;
+	}
+	
+	public boolean offerFirst(E e) {
+		addFirst(e);
+		return true;
+	}
+	
+	public boolean offerLast(E e) {
+		addLast(e);
+		return true;
+	}
 
 	public E get(int index) {
 
@@ -114,10 +130,50 @@ public class LinkedList<E> {
 		return get(size-1);
 	}
 	   
+	public E element() {
+		if(size==0) throw new MyNoSuchElementException("No element found: The collection is empty.");
+		return get(0);
+	}
 	
-//	public int indexOf(Object obj) {
-//		
-//	}
+	public E peek() {
+		return getFirst();
+	}
+	
+	public E peekFirst() {
+		return getFirst();
+	}
+	
+	public E peekLast() {
+		return getLast();
+	}
+
+	public int indexof(Object obj) {
+		Node curr = head;
+		int trace = 0;
+		while(trace!=size) {
+			Node next = curr.next;
+			if (curr.data.equals(obj)) {
+				return trace;
+			}
+			curr = next;
+			trace++;
+		}
+		return -1;
+	}
+	
+	public int lastIndexOf(Object obj) {
+		Node curr = tail;
+		int trace = size;
+		while(trace!=0) {
+			Node next = curr.prev;
+			if (curr.data.equals(obj)) {
+				return trace-1;
+			}
+			curr = next;
+			trace--;
+		}
+		return -1;
+	}
 	
 	public void clear() {
 		Node curr = head;
@@ -135,22 +191,9 @@ public class LinkedList<E> {
 		tail = null;
 		size = 0;
 	}
-
+	
 	public boolean contains(Object obj) {
-		Node curr = head;
-		boolean isFound = false;
-		int trace = 0;
-		while (trace != size) {
-			Node next = curr.next;
-			if (curr.data.equals(obj)) {
-				isFound = false;
-				return true;
-			}
-			curr = next;
-			trace++;
-		}
-
-		return false;
+		return indexof(obj)==-1? false : true;
 	}
 
 	public String toString() {

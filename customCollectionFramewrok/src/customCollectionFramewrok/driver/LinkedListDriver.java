@@ -11,6 +11,8 @@ public class LinkedListDriver {
 		list.add(10);
 		list.add(20);
 		list.add(30);
+		list.add(20);
+		list.add(10);
 //		list.add(0, 100);
 //		list.add(2,300);
 //		list.add(4,400);
@@ -36,6 +38,18 @@ public class LinkedListDriver {
 		
 		System.out.println(list.getFirst());
 		System.out.println(list.getLast());
+		System.out.println(list.element());
+		System.out.println("==================================== Index of : ================================");
+		System.out.println( "index of : "+ list.indexof(2)  + "Last indexOf() : "+ list.lastIndexOf(2));
+		System.out.println( "index of : "+ list.indexof(10) + "Last indexOf() : "+ list.lastIndexOf(10));
+		System.out.println( "index of : "+ list.indexof(20) + "Last indexOf() : "+ list.lastIndexOf(20));
+		System.out.println( "index of : "+ list.indexof(30) + "Last indexOf() : "+ list.lastIndexOf(30));
+		
+		System.out.println("====================================  contains of : ================================");
+		System.out.println(list.contains(2));
+		System.out.println(list.contains(10));
+		System.out.println(list.contains(20));
+		System.out.println(list.contains(30));
 		System.out.println(list);
 	}
 }
