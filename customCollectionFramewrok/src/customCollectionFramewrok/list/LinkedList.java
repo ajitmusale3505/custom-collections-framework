@@ -1,5 +1,7 @@
 package customCollectionFramewrok.list;
 
+import java.security.cert.TrustAnchor;
+
 import customCollectionFramewrok.exception.MyIndexOutOfBoundsException;
 import customCollectionFramewrok.exception.MyNoSuchElementException;
 
@@ -146,6 +148,108 @@ public class LinkedList<E> {
 	public E peekLast() {
 		return getLast();
 	}
+	
+	
+	public E poll() {
+		return remove(0);
+	}
+	
+	public E pollFirst() {
+		if(size==0) return null;
+		return remove(0);
+	}
+	
+	public E pollLast() {
+		if(size==0) return null;
+		return remove(size-1);
+	}
+	
+	public E set(int index,E element) {
+		checkIndex(index);
+		remove(index);
+		add(index, element);
+		return element;
+	}
+	
+	public E remove(int index) {
+		
+		checkIndex(index);
+		
+		if (index==0) {
+			Node current = head;
+			Node next = current.next;
+			E ele = (E) current.data;
+			next.prev = null;
+			current = null;
+			head = next;
+			size--;
+			return ele;
+		}
+		else if(index==size-1) {
+			Node curr = tail;
+			Node prev = curr.prev;
+			E ele =(E) curr.data;
+			prev.next = null;
+			curr = null;
+			tail = prev;
+			size--;
+			return ele;
+		}
+		Node current = head.next;
+		int trace = 1;
+		while(trace!=size-1) {
+			Node next = current.next;
+			if (index==trace) {
+				Node remove = current;
+				E ele = (E)remove.data;
+				Node previous = current.prev;
+				
+				previous.next = next;
+				next.prev = previous;
+				remove = null;
+				size--;
+				return ele;
+			}
+			trace++;
+			current = next;
+		}
+		return null;
+	}
+	
+	public boolean remove(Object obj) {
+		if(size==0) throw new MyNoSuchElementException("List is Empty");
+		if (indexof(obj)==-1) return false;
+		int indx = indexof(obj);
+		System.out.println(indx);
+		remove(indx);
+		return  true;
+	}
+	
+	public E removeFirst() {
+		if(size==0) throw new MyNoSuchElementException("List is Empty");
+		return remove(0);
+	}
+	
+	public boolean removeFirstOccurence(Object obj) {
+		if(size==0) throw new MyNoSuchElementException("List is Empty");
+		if (indexof(obj)==-1) return false;
+		int idx = indexof(obj);
+		remove(idx);
+		return true;
+	}
+	
+	public E removeLast() {
+		if(size==0) throw new MyNoSuchElementException("List is Empty");
+		return remove(size-1);
+	}
+	
+	public boolean removeLastOccurrence(Object obj) {
+		if(size==0) throw new MyNoSuchElementException("List is Empty");
+		if (lastIndexOf(obj)==-1) return false;
+		int idx = lastIndexOf(obj);
+		remove(idx);
+		return true;
+	}
 
 	public int indexof(Object obj) {
 		Node curr = head;
@@ -194,6 +298,15 @@ public class LinkedList<E> {
 	
 	public boolean contains(Object obj) {
 		return indexof(obj)==-1? false : true;
+	}
+	
+	public int size() {
+		return size;
+	}
+	
+	public void checkIndex(int index) {
+		if (index < 0 || index >= size)
+			throw new MyIndexOutOfBoundsException("Index: " + index + ", Size: " + size);
 	}
 
 	public String toString() {

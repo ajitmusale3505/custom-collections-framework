@@ -36,20 +36,36 @@ public class LinkedListDriver {
 //		System.out.println(list.get(2));
 		
 		
-		System.out.println(list.getFirst());
-		System.out.println(list.getLast());
-		System.out.println(list.element());
-		System.out.println("==================================== Index of : ================================");
-		System.out.println( "index of : "+ list.indexof(2)  + "Last indexOf() : "+ list.lastIndexOf(2));
-		System.out.println( "index of : "+ list.indexof(10) + "Last indexOf() : "+ list.lastIndexOf(10));
-		System.out.println( "index of : "+ list.indexof(20) + "Last indexOf() : "+ list.lastIndexOf(20));
-		System.out.println( "index of : "+ list.indexof(30) + "Last indexOf() : "+ list.lastIndexOf(30));
+//		System.out.println(list.getFirst());
+//		System.out.println(list.getLast());
+//		System.out.println(list.element());
+//		System.out.println("==================================== Index of : ================================");
+//		System.out.println( "index of : "+ list.indexof(2)  + "Last indexOf() : "+ list.lastIndexOf(2));
+//		System.out.println( "index of : "+ list.indexof(10) + "Last indexOf() : "+ list.lastIndexOf(10));
+//		System.out.println( "index of : "+ list.indexof(20) + "Last indexOf() : "+ list.lastIndexOf(20));
+//		System.out.println( "index of : "+ list.indexof(30) + "Last indexOf() : "+ list.lastIndexOf(30));
+//		
+//		System.out.println("====================================  contains of : ================================");
+//		System.out.println(list.contains(2));
+//		System.out.println(list.contains(10));
+//		System.out.println(list.contains(20));
+//		System.out.println(list.contains(30));
 		
-		System.out.println("====================================  contains of : ================================");
-		System.out.println(list.contains(2));
-		System.out.println(list.contains(10));
-		System.out.println(list.contains(20));
-		System.out.println(list.contains(30));
+		System.out.println("====================================  remove(int index) : ================================");
+		System.out.println(list);
+//		System.out.println(list.remove(2));
+//		System.out.println(list);
+//		System.out.println(list.remove(2));
+//		System.out.println(list.remove(0));
+//		System.out.println(list);
+//		System.out.println(list.remove(3));
+//		System.out.println(list.remove((Object)20));
+//		System.out.println(list.remove((Object)10));
+//		System.out.println(list.remove((Object)10));
+//		System.out.println(list.remove((Object)100));
+		
+		System.out.println("====================================  set(int index,E element) : ================================");
+		System.out.println(list.set(3, 99));
 		System.out.println(list);
 	}
 }
