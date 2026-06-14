@@ -41,6 +41,8 @@ public class Stack<E> {
 		}
 		return (E) arr[top-1];
 	}
+	
+	
 
 	@Override
 	public String toString() {
