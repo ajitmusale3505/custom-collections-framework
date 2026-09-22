@@ -1,89 +1,160 @@
 package customCollectionFramewrok.queue;
 
+import customCollectionFramewrok.exception.MyIllegalArgumentException;
+import customCollectionFramewrok.exception.MyNoSuchElementException;
+
 public class PriorityQueue<E extends Comparable<E>> {
 
-	private int r;
-	private int l;
-	private int index;
-	private Object[] arr;
-	private final int size = 11;
-	private int length;
+    private static final int DEFAULT_CAPACITY = 11;
+    private Object[] arr;
+    private int index;
 
-	public PriorityQueue() {
-		length = 11;
-		arr = new Object[size];
-	}
+    public PriorityQueue() {
+        this(DEFAULT_CAPACITY);
+    }
 
-	public PriorityQueue(int size) {
-		length = size;
-		arr = new Object[size];
-	}
+    public PriorityQueue(int initialCapacity) {
+        if (initialCapacity <= 0) {
+            throw new MyIllegalArgumentException("Capacity must be greater than zero");
+        }
+        arr = new Object[initialCapacity];
+    }
 
-	public boolean add(E ele) {
-		if (length >= arr.length) {
-			grow();
-		}
+    public boolean add(E ele) {
+        ensureCapacity(index + 1);
+        arr[index] = ele;
+        heapifyUp(index);
+        index++;
+        return true;
+    }
 
-		arr[index] = ele;
+    public boolean offer(E ele) {
+        return add(ele);
+    }
 
-		heapifyUp(index);
+    public E peek() {
+        return index == 0 ? null : (E) arr[0];
+    }
 
-		index++;
+    public E element() {
+        if (index == 0) {
+            throw new MyNoSuchElementException("Priority queue is empty");
+        }
+        return (E) arr[0];
+    }
 
-		return true;
-	}
+    public E poll() {
+        if (index == 0) {
+            return null;
+        }
+        E result = (E) arr[0];
+        index--;
+        if (index == 0) {
+            arr[0] = null;
+            return result;
+        }
+        arr[0] = arr[index];
+        arr[index] = null;
+        heapifyDown(0);
+        return result;
+    }
 
-	public void grow() {
+    public E remove() {
+        if (index == 0) {
+            throw new MyNoSuchElementException("Priority queue is empty");
+        }
+        return poll();
+    }
 
-	}
+    public int size() {
+        return index;
+    }
 
-	private void heapifyUp(int child) {
-		while (child > 0) {
-			int parent = (child - 1) / 2;
+    public boolean isEmpty() {
+        return index == 0;
+    }
 
-			E childValue = (E) arr[child];
-			E parentValue = (E) arr[parent];
+    public int capacity() {
+        return arr.length;
+    }
 
-			if (childValue.compareTo(parentValue) < 0) {
-				swap(child, parent);
+    public boolean isFull() {
+        return index == arr.length;
+    }
 
-				child = parent;
-			} else {
-				break;
-			}
-		}
-	}
+    public void clear() {
+        for (int i = 0; i < index; i++) {
+            arr[i] = null;
+        }
+        index = 0;
+    }
 
-	private void swap(int a, int b) {
-		Object temp = arr[a];
+    private void ensureCapacity(int minCapacity) {
+        if (minCapacity <= arr.length) {
+            return;
+        }
+        grow(minCapacity);
+    }
 
-		arr[a] = arr[b];
+    private void grow(int minCapacity) {
+        int newCapacity = arr.length + arr.length / 2;
+        if (newCapacity < minCapacity) {
+            newCapacity = minCapacity;
+        }
+        Object[] newArr = new Object[newCapacity];
+        System.arraycopy(arr, 0, newArr, 0, index);
+        arr = newArr;
+    }
 
-		arr[b] = temp;
-	}
+    private void heapifyUp(int child) {
+        while (child > 0) {
+            int parent = (child - 1) / 2;
+            E childValue = (E) arr[child];
+            E parentValue = (E) arr[parent];
 
-	public boolean isFull() {
-		return index == length;
-	}
+            if (childValue.compareTo(parentValue) >= 0) {
+                break;
+            }
+            swap(child, parent);
+            child = parent;
+        }
+    }
 
-	@Override
-	public String toString() {
-		if (index == 0) {
-			return "[]";
-		}
+    private void heapifyDown(int parent) {
+        while (true) {
+            int left = parent * 2 + 1;
+            int right = left + 1;
+            int smallest = parent;
 
-		String str = "[";
+            if (left < index && ((E) arr[left]).compareTo((E) arr[smallest]) < 0) {
+                smallest = left;
+            }
+            if (right < index && ((E) arr[right]).compareTo((E) arr[smallest]) < 0) {
+                smallest = right;
+            }
+            if (smallest == parent) {
+                break;
+            }
+            swap(parent, smallest);
+            parent = smallest;
+        }
+    }
 
-		for (int i = 0; i < index; i++) {
-			str += arr[i];
+    private void swap(int a, int b) {
+        Object temp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = temp;
+    }
 
-			if (i != index - 1) {
-				str += ", ";
-			}
-		}
-
-		str += "]";
-
-		return str;
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        for (int i = 0; i < index; i++) {
+            if (i > 0) {
+                sb.append(", ");
+            }
+            sb.append(arr[i]);
+        }
+        return sb.append("]").toString();
+    }
 }

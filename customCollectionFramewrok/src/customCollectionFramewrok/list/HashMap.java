@@ -1,134 +1,133 @@
 package customCollectionFramewrok.list;
 
-import java.lang.reflect.Array;
-
 public class HashMap<K, V> {
 
-	private class Node {
-		K key;
-		V value;
+    private static final int DEFAULT_CAPACITY = 4;
+    private static final double LOAD_FACTOR = 0.75;
 
-		public Node(K key, V value) {
-			this.key = key;
-			this.value = value;
-		}
-	}
+    private class Node {
+        K key;
+        V value;
 
-	private int n;
-	private int N;
-	private LinkedList<Node> buckets[];
+        Node(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
 
-	public HashMap() {
-		this.N = 4;
-		this.buckets = new LinkedList[4];
-		for (int i = 0; i < 4; i++) {
-			this.buckets[i] = new LinkedList<>();
-		}
-	}
+    private int n;
+    private int capacity;
+    private LinkedList<Node>[] buckets;
 
-	private int hashFunction(K key) {
-		int hash = key.hashCode();
-		return Math.abs(hash) % 4;
-	}
+    public HashMap() {
+        this(DEFAULT_CAPACITY);
+    }
 
-	private int searchInLL(K key, int bucketindex) {
-		LinkedList<Node> ll = buckets[bucketindex];
+    public HashMap(int initialCapacity) {
+        if (initialCapacity <= 0) {
+            throw new IllegalArgumentException("Capacity must be greater than zero");
+        }
+        capacity = initialCapacity;
+        buckets = createBuckets(capacity);
+    }
 
-		for (int i = 0; i < ll.size(); i++) {
-			if (ll.get(i).key == key) {
-				return i;
-			}
-		}
-		return -1;
-	}
+    private LinkedList<Node>[] createBuckets(int capacity) {
+        LinkedList<Node>[] result = new LinkedList[capacity];
+        for (int i = 0; i < capacity; i++) {
+            result[i] = new LinkedList<>();
+        }
+        return result;
+    }
 
-	private void rehash() {
-		LinkedList<Node> oldBuckets[] = buckets;
+    private int hashFunction(K key) {
+        int hash = key == null ? 0 : key.hashCode();
+        return (hash & 0x7fffffff) % capacity;
+    }
 
-		buckets = new LinkedList[N * 2];
+    private int searchInLL(K key, int bucketIndex) {
+        LinkedList<Node> list = buckets[bucketIndex];
+        for (int i = 0; i < list.size(); i++) {
+            Node node = list.get(i);
+            if (key == null ? node.key == null : key.equals(node.key)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
-		for (int i = 0; i < N * 2; i++) {
-			buckets[i] = new LinkedList<>();
-		}
+    private void rehash() {
+        LinkedList<Node>[] oldBuckets = buckets;
+        capacity *= 2;
+        buckets = createBuckets(capacity);
+        int oldSize = n;
+        n = 0;
 
-		for (int i = 0; i < oldBuckets.length; i++) {
-			LinkedList<Node> ll = oldBuckets[i];
+        for (LinkedList<Node> list : oldBuckets) {
+            for (int i = 0; i < list.size(); i++) {
+                Node node = list.get(i);
+                put(node.key, node.value);
+            }
+        }
 
-			for (int j = 0; i < ll.size(); j++) {
-				Node node = ll.get(j);
-				put(node.key, node.value);
-			}
-		}
-	}
+        n = oldSize;
+    }
 
-	public void put(K key, V value) {
-		int bucketIndx = hashFunction(key);
-		int dataIndx = searchInLL(key, bucketIndx);
+    public void put(K key, V value) {
+        int bucketIndex = hashFunction(key);
+        int dataIndex = searchInLL(key, bucketIndex);
 
-		if ( dataIndx == -1) { // Key doesn't Exist
-			buckets[bucketIndx].add(new Node(key, value));
-			n++;
-		} else {
-			Node node = buckets[bucketIndx].get(dataIndx);
-			node.value = value;
-		}
+        if (dataIndex == -1) {
+            buckets[bucketIndex].add(new Node(key, value));
+            n++;
+            if ((double) n / capacity > LOAD_FACTOR) {
+                rehash();
+            }
+        } else {
+            buckets[bucketIndex].get(dataIndex).value = value;
+        }
+    }
 
-		double lambda = (double) n / N;
-		if (lambda > 2.0) {
-			rehash();
-		}
-	}
+    public boolean containsKey(K key) {
+        int bucketIndex = hashFunction(key);
+        return searchInLL(key, bucketIndex) != -1;
+    }
 
-	public boolean containsKey(K key) {
-		int bucketIndx = hashFunction(key);
-		int dataIndx = searchInLL(key, bucketIndx);
+    public V get(K key) {
+        int bucketIndex = hashFunction(key);
+        int dataIndex = searchInLL(key, bucketIndex);
+        return dataIndex == -1 ? null : buckets[bucketIndex].get(dataIndex).value;
+    }
 
-		if (bucketIndx == -1)
-			return false;
-		else
-			return true;
+    public V remove(K key) {
+        int bucketIndex = hashFunction(key);
+        int dataIndex = searchInLL(key, bucketIndex);
+        if (dataIndex == -1) {
+            return null;
+        }
+        n--;
+        return buckets[bucketIndex].remove(dataIndex).value;
+    }
 
-	}
+    public ArrayList<K> keySet() {
+        ArrayList<K> keys = new ArrayList<>(n);
+        for (LinkedList<Node> list : buckets) {
+            for (int i = 0; i < list.size(); i++) {
+                keys.add(list.get(i).key);
+            }
+        }
+        return keys;
+    }
 
-	public V get(K key) {
-		int bi = hashFunction(key);
-		int di = searchInLL(key, bi);
+    public int size() {
+        return n;
+    }
 
-		if (di == -1) {
-			return null;
-		} else {
-			Node node = buckets[bi].get(di);
-			return node.value;
-		}
-	}
+    public boolean isEmpty() {
+        return n == 0;
+    }
 
-	public V remove(K key) {
-		int bi = hashFunction(key);
-		int di = searchInLL(key, bi);
-
-		if (di == -1)
-			return null;
-		else {
-			Node node = buckets[bi].remove(di);
-			return node.value;
-		}
-	}
-
-	public ArrayList<K> keySet() {
-		ArrayList<K> keys = new ArrayList<>();
-
-		for (int i = 0; i < buckets.length; i++) {
-			LinkedList<Node> ll = buckets[i];
-			for (int j = 0; j < ll.size(); j++) {
-				Node node = ll.get(j);
-				keys.add(node.key);
-			}
-		}
-
-		return keys;
-	}
-
-	public boolean isEMpty() {
-		return n == 0;
-	}
+    public void clear() {
+        buckets = createBuckets(capacity);
+        n = 0;
+    }
 }
